@@ -1,0 +1,33 @@
+{
+  "name": "reternal",
+  "version": "1.0.0",
+  "description": "A node.js discord bot for RE:Play Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "url": "https://github.com/JM1k1/RE-Eternal/"
+  },
+  "author": "JMiki",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/opus": "^0.1.0",
+    "discord.js": "^12.0.2",
+    "dotenv": "^8.2.0",
+    "ffmpeg": "0.0.4",
+    "fs": "0.0.1-security",
+    "node-superfetch": "^0.1.10",
+    "path": "^0.12.7",
+    "simple-youtube-api": "^5.2.1",
+    "ytdl-core": "^2.0.1"
+  },
+  "engines": {
+    "node": "12.16"
+  },
+  "keywords": [
+    "node",
+    "bot",
+    "discord"
+  ]
+}
