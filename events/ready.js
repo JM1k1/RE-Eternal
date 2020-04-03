@@ -19,7 +19,7 @@ async function checkVkPost(client) {
 
 async function getPostId() {
   const { body } = await snek.get(
-    `https://api.vk.com/method/wall.get?domain=test_bot2020&count=2&v=5.52&access_token=${process.env.VK_TOKEN}`
+    `https://api.vk.com/method/wall.get?domain=replay_spb&count=2&v=5.52&access_token=${process.env.VK_TOKEN}`
   );
   if (body.response.items[0].date < body.response.items[1].date)
     return body.response.items[1];
