@@ -21,7 +21,7 @@ for (var i = 1; i < 20; i++){
     }
 }
 
- game.channel = await msg.guild.channels.create(`-${game.name} ${game.nameId}`, {
+ game.channel = await msg.guild.channels.create(`${game.name} ${game.nameId}`, {
     type: 'voice', parent: '695976030510252033', userLimit: game.limit,
     permissionOverwrites: [
        {
@@ -34,7 +34,7 @@ for (var i = 1; i < 20; i++){
     msg.member.voice.setChannel(await game.channel);
     msg.delete();
 
-   return require("../../special_events/mmStateUpdate")(client, game.msg ,game.channel, game.embed, game.limit, game.name, game.desc);
+   return require("../../special_events/mmStateUpdate")(client, game);
 };
 
 async function getGameEmbed(game, userAvatar) {
