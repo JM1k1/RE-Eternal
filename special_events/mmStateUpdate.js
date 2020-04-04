@@ -1,38 +1,36 @@
-module.exports = async (client, msg, mmChannel, embed, limit, desc) => {
+module.exports = async (client, msg, gameChannel, embed, limit, name, desc) => {
   client.on("voiceStateUpdate", async (oldState, newState) => {
-
-
     if (oldState.channel != undefined) {
-      if (oldState.channel.id == mmChannel.id) {
+      if (oldState.channel.id == gameChannel.id) {
         if (oldState.channel.members.size == 0) {
           oldState.channel.delete();
-          //await msg.delete();
+          await msg.delete();
           return;
         }
-
+        await msg.edit(
+          await updateEmbed(embed, limit, oldState.channel, name, desc)
+        );
       }
     }
-  
-if (newState.channel != undefined) {
-    if (newState.channel.id == mmChannel.id) {
-        let team = '';
-        mmChannel.members.forEach(member => member.toString()? team += `${member.toString()}\n` : null)
-        embed.setDescription(team);
-        await msg.edit(embed.setDescription(team));
-    }
-}
-//member => member.toString() != undefined ? team += `${member.toString()}\n` : null
 
-});
+    if (newState.channel != undefined) {
+      if (newState.channel.id == gameChannel.id) {
+        await msg.edit(await updateEmbed(embed, limit, newState.channel, name, desc));
+      }
+    }
+  });
 };
 
-
-async function updateEmbed(embed, freeSize, channelMembers) {
-    let team = '';
-    channelMembers.forEach(member => member.toString()? team += `${member.toString()}\n` : null)
-    embed.setDescription(team)
-    if (freeSize > 0) embed.setTitle(`Ищут + ${(size)} в ${gameDesc}`);
-    else embed.setTitle(`Играют в ${gameDesc}`);
-
-
+async function updateEmbed(embed, limit, channel, name, desc) {
+  let team = `${desc}\n\nИгроки:\n`;
+  let freeSlots = limit - await channel.members.size;
+  channel.members.forEach((member) =>
+    (team += `${member.toString()}\n`)
+  );
+  embed.setDescription(team);
+  if (freeSlots > 0) {
+    embed.setTitle(`Ищут + ${freeSlots} в ${name}`);
+  } else embed.setTitle(`Играют в ${name}`);
+  
+  return embed;
 }
