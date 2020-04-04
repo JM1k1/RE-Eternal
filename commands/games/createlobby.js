@@ -7,15 +7,15 @@ module.exports.run = async (client, msg, args) => {
 
   var game = {
     name: args[0],
-    desc: args.slice(1, args.length - 1).join(' '),
-    limit: parseInt(args[args.length - 1])
+    desc: parseInt(args[args.length]) ? args.slice(1, args.length).join(' ') : args.slice(1, args.length -1).join(' '),
+    limit: parseInt(args[args.length - 1] || 0)
   }
   game.embed =  await getGameEmbed(game, msg.author.displayAvatarURL());
 
   game.msg = await msg.channel.send(game.embed);
 
 for (var i = 1; i < 20; i++){
-  if (!(msg.guild.channels.cache.find(ch => ch.name == (`-${game.name} ${i}`)))){ 
+  if (!(msg.guild.channels.cache.find(ch => ch.name == (`${game.name} ${i}`)))){ 
     game.nameId = i;
     break;
     }
@@ -23,13 +23,13 @@ for (var i = 1; i < 20; i++){
 
  game.channel = await msg.guild.channels.create(`${game.name} ${game.nameId}`, {
     type: 'voice', parent: '695976030510252033', userLimit: game.limit,
-    permissionOverwrites: [
+    permissionOverwrites: game.limit > 0 ? [
        {
          id: "695234514334515220",
-         deny: ['VIEW_CHANNEL'],
+        deny: ['VIEW_CHANNEL'],
       },
-    ],
-  })
+    ] : null,
+ })
 
     msg.member.voice.setChannel(await game.channel);
     msg.delete();
@@ -40,7 +40,7 @@ for (var i = 1; i < 20; i++){
 async function getGameEmbed(game, userAvatar) {
     const gameEmbed = new MessageEmbed()
     .setColor("PURPLE")
-    .setAuthor(`Подбор игроков`, userAvatar)
+    .setAuthor(`Подбор игроков 🎮`, userAvatar)
     .setTitle(`${game.name}`)
     .setDescription(`${game.desc}`)
     .setThumbnail(imageUrl);
@@ -48,13 +48,13 @@ async function getGameEmbed(game, userAvatar) {
 }
 
 module.exports.conf = {
-  aliases: ["mm"],
+  aliases: ["m","cl"],
   authorPerm: "",
 };
 
 module.exports.help = {
   name: "createlobby",
   description: "Create voice lobby",
-  usage: "mm",
-  example: ["cl Overwatch <Ranked>"],
+  usage: "cl [game_name] <game_desc> <limit>",
+  example: ["cl Overwatch Ranked 6"],
 };
