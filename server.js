@@ -8,4 +8,4 @@ const client = new ReternalClient({
 require("./handle/events")(client);
 
 require("dotenv").config();
-client.login(process.env.TOKEN);
+client.login(process.env.BOT_TOKEN);
