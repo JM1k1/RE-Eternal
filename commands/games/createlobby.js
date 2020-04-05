@@ -3,7 +3,7 @@ const imageUrl =
   "https://www.digiseller.ru/preview/400521/p1_2578032_74d6c223.png";
 
 module.exports.run = async (client, msg, args) => {
-  if (args.length < 1) return args.missing(msg, "Нету названия", this.help);
+  if (args.length < 1) return args.missing(msg, "Не указано название лобби", this.help);
   if (!msg.member.voice.channel) {
     msg.delete();
     return msg.channel
@@ -44,7 +44,7 @@ module.exports.run = async (client, msg, args) => {
           ? [
               {
                 id: "695234514334515220",
-                deny: ["VIEW_CHANNEL"],
+                deny: ["VIEW_CHANNEL","CONNECT"],
               },
             ]
           : null,
@@ -52,7 +52,7 @@ module.exports.run = async (client, msg, args) => {
   );
 
   msg.member.voice.setChannel(await game.channel);
-  
+
   msg.delete();
   return require("../../special_events/lobbyStateUpdate")(client, game);
 };
