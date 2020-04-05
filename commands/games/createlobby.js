@@ -1,29 +1,39 @@
 const { MessageEmbed } = require("discord.js");
 const imageUrl =
   "https://www.digiseller.ru/preview/400521/p1_2578032_74d6c223.png";
+const config = require("./games.json");
 
 module.exports.run = async (client, msg, args) => {
-  if (args.length < 1) return args.missing(msg, "Не указано название лобби", this.help);
-  if (!msg.member.voice.channel) {
-    msg.delete();
+  if (args.length < 1)
+    return args.missing(msg, "Не указано название игры", this.help);
+  if (!msg.member.voice.channel)
     return msg.channel
       .send("Вы должны сначала присоединиться к голосовому каналу")
       .then((msgN) =>
         msgN.delete({ timeout: 6 * 1000, reason: "It had to be done." })
       );
-  }
 
   var game = {
-    name: args[0],
-    desc: parseInt(args[args.length])
+    name: args[0].charAt(0).toUpperCase() + args[0].slice(1).toLowerCase(),
+    desc: parseInt(args[args.length])           //Set game description
       ? args.slice(1, args.length).join(" ")
       : args.slice(1, args.length - 1).join(" "),
-    limit: parseInt(args[args.length - 1] || 0),
+    limit: parseInt(args[args.length - 1] || 0), //Set lobby limit
+    image: config.default.image,
+    authorAvatar: msg.author.displayAvatarURL(),
   };
-  game.embed = await getGameEmbed(game, msg.author.displayAvatarURL());
 
+  //Find game image
+  for (var i = 0; i < config.list.length; i++)
+    if (config.list[i]["name"] == game.name) game.image = config.list[i].image;
+
+  //Set game embed by async function
+  game.embed = await getGameEmbed(game);
+
+  //Get game message
   game.msg = await msg.channel.send(game.embed);
 
+  //Find channel name id
   for (var i = 1; i < 20; i++) {
     if (
       !msg.guild.channels.cache.find((ch) => ch.name == `${game.name} ${i}`)
@@ -32,8 +42,10 @@ module.exports.run = async (client, msg, args) => {
       break;
     }
   }
+  console.log();
 
-  game.channel = await msg.guild.channels.create(
+  // Create lobby
+  game.lobby = await msg.guild.channels.create(
     `${game.name} ${game.nameId}`,
     {
       type: "voice",
@@ -44,26 +56,27 @@ module.exports.run = async (client, msg, args) => {
           ? [
               {
                 id: "695234514334515220",
-                deny: ["VIEW_CHANNEL","CONNECT"],
+                deny: ["VIEW_CHANNEL", "CONNECT"],
               },
             ]
           : null,
     }
   );
-
-  msg.member.voice.setChannel(await game.channel);
+  //Move message author to lobby
+  msg.member.voice.setChannel(await game.lobby);
 
   msg.delete();
+
   return require("../../special_events/lobbyStateUpdate")(client, game);
 };
 
-async function getGameEmbed(game, userAvatar) {
+async function getGameEmbed(game) {
   const gameEmbed = new MessageEmbed()
     .setColor("PURPLE")
-    .setAuthor(`Подбор игроков 🎮`, userAvatar)
+    .setAuthor(`Подбор игроков 🎮`, game.authorAvatar)
     .setTitle(`${game.name}`)
     .setDescription(`${game.desc}`)
-    .setThumbnail(imageUrl);
+    .setThumbnail(game.image);
   return gameEmbed;
 }
 
