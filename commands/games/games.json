@@ -1,0 +1,18 @@
+{
+  "list": [
+    { "name": "Overwatch", "image": "https://i.imgur.com/OEm5bFP.png" },
+    { "name": "Apex", "image": "https://i.imgur.com/hii7zxO.png" },
+    { "name": "Rainbow6", "image": "https://i.imgur.com/VGlKLie.png" },
+    { "name": "Pubg", "image": "https://i.imgur.com/hP9GKim.png" },
+    { "name": "Lol", "image": "https://i.imgur.com/BhNLtdw.png" },
+    { "name": "Csgo", "image": "https://i.imgur.com/UbqxGLG.png" },
+    { "name": "Gta5", "image": "https://i.imgur.com/YCRIyR0.png" },
+    { "name": "Raft", "image": "https://i.imgur.com/6EqQ1Bz.png" },
+    { "name": "Dbdl", "image": "https://i.imgur.com/QGIUQF4.png" },
+    { "name": "Code", "image": "https://i.imgur.com/AuOiZQn.png" }
+  ],
+
+  "default": {
+    "image": "https://i.imgur.com/czVDCAb.png"
+  }
+}
