@@ -1,7 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const imageUrl =
-  "https://www.digiseller.ru/preview/400521/p1_2578032_74d6c223.png";
-const config = require("./games.json");
+const gameAssets = require("../../assets/games.json");
 
 module.exports.run = async (client, msg, args) => {
   if (args.length < 1)
@@ -19,13 +17,13 @@ module.exports.run = async (client, msg, args) => {
       ? args.slice(1, args.length).join(" ")
       : args.slice(1, args.length - 1).join(" "),
     limit: parseInt(args[args.length - 1] || 0), //Set lobby limit
-    image: config.default.image,
+    image: gameAssets.default.image,
     authorAvatar: msg.author.displayAvatarURL(),
   };
 
   //Find game image
-  for (var i = 0; i < config.list.length; i++)
-    if (config.list[i]["name"] == game.name) game.image = config.list[i].image;
+  for (var i = 0; i < gameAssets.list.length; i++)
+    if (gameAssets.list[i]["name"] == game.name) game.image = gameAssets.list[i].image;
 
   //Set game embed by async function
   game.embed = await getGameEmbed(game);
