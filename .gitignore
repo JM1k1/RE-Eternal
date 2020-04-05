@@ -17,3 +17,6 @@ logs/
 
 # Database files
 *.db
+
+# Storage files
+storage/
