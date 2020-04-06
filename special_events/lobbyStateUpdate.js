@@ -1,5 +1,5 @@
-const msgTimeout = { timeout: 6 * 1000, reason: "It had to be done." };
-const reactionAwaitTime = 1000 * 600;
+const msgTimeout = { timeout: 120 * 1000, reason: "It had to be done." };
+const reactionAwaitTime = 1000 * 6000;
 const emoji = "🎮";
 
 module.exports = async (client, game) => {
@@ -29,10 +29,10 @@ async function updateEmbed(game) {
   game.embed.setDescription(team);
   if (freeSlots > 0) {
     game.embed.setTitle(`Ищут + ${freeSlots} в ${game.name}`);
-    //game.embed.setAuthor(`Подбор игроков 🎮`, game.authorAvatar);
+    game.embed.setAuthor(`Подбор игроков 🎮`, game.authorAvatar);
     awaitReaction(game);
   } else {
-    //game.embed.setAuthor(`Подбор закочен 🎮`, game.authorAvatar);
+    game.embed.setAuthor(`Приятной игры 🎮`, game.authorAvatar);
     game.embed.setTitle(`Играют в ${game.name}`);
   }
   return game.embed;
@@ -67,13 +67,13 @@ async function awaitReaction(game) {
       } else {
         game.msg.channel
           .send(
-            `${member.user.toString()}, вы должны сначала присоединиться к голосовому каналу.`
+            `${member.user.toString()}, Вы должны сначала присоединиться к голосовому каналу.`
           )
           .then((msgN) => msgN.delete(msgTimeout));
       }
     } else {
       game.msg.channel
-        .send(`${member.user.toString()}, вы уже находитесь в лобби.`)
+        .send(`${member.user.toString()}, Вы уже находитесь в лобби.`)
         .then((msgN) => msgN.delete(msgTimeout));
     }
     return awaitReaction(game);

@@ -1,19 +1,27 @@
 const { MessageEmbed } = require("discord.js");
 const gameAssets = require("../../assets/games.json");
+const msgTimeout = { timeout: 120 * 1000, reason: "It had to be done." };
+const roles = ["695239403907448853", "696685846966829056"];
 
 module.exports.run = async (client, msg, args) => {
+  if (!msg.member.roles.cache.find((role) => roles.find((i) => i == role.id))) return msg.channel
+  .send(`${msg.author.toString()}, Доступ к команде запрещён. Вам необходимо иметь роль: <@&${roles[0]}> или <@&${roles[1]}>, чтобы воспользоваться данной командой.`)
+  .then((msgN) =>
+    msgN.delete(msgTimeout)
+  );
+
   if (args.length < 1)
     return args.missing(msg, "Не указано название игры", this.help);
   if (!msg.member.voice.channel)
     return msg.channel
-      .send("Вы должны сначала присоединиться к голосовому каналу")
+      .send(`${msg.author.toString()}, Вы должны сначала присоединиться к голосовому каналу.`)
       .then((msgN) =>
-        msgN.delete({ timeout: 6 * 1000, reason: "It had to be done." })
+        msgN.delete(msgTimeout)
       );
 
   var game = {
     name: args[0].charAt(0).toUpperCase() + args[0].slice(1).toLowerCase(),
-    desc: parseInt(args[args.length])           //Set game description
+    desc: parseInt(args[args.length]) //Set game description
       ? args.slice(1, args.length).join(" ")
       : args.slice(1, args.length - 1).join(" "),
     limit: parseInt(args[args.length - 1] || 0), //Set lobby limit
@@ -23,7 +31,8 @@ module.exports.run = async (client, msg, args) => {
 
   //Find game image
   for (var i = 0; i < gameAssets.list.length; i++)
-    if (gameAssets.list[i]["name"] == game.name) game.image = gameAssets.list[i].image;
+    if (gameAssets.list[i]["name"] == game.name)
+      game.image = gameAssets.list[i].image;
 
   //Set game embed by async function
   game.embed = await getGameEmbed(game);
@@ -43,23 +52,20 @@ module.exports.run = async (client, msg, args) => {
   console.log();
 
   // Create lobby
-  game.lobby = await msg.guild.channels.create(
-    `${game.name} ${game.nameId}`,
-    {
-      type: "voice",
-      parent: "695976030510252033",
-      userLimit: game.limit,
-      permissionOverwrites:
-        game.limit > 0
-          ? [
-              {
-                id: "695234514334515220",
-                deny: ["VIEW_CHANNEL", "CONNECT"],
-              },
-            ]
-          : null,
-    }
-  );
+  game.lobby = await msg.guild.channels.create(`${game.name} ${game.nameId}`, {
+    type: "voice",
+    parent: "695976030510252033",
+    userLimit: game.limit,
+    permissionOverwrites:
+      game.limit > 0
+        ? [
+            {
+              id: "695234514334515220",
+              deny: ["VIEW_CHANNEL", "CONNECT"],
+            },
+          ]
+        : null,
+  });
   //Move message author to lobby
   msg.member.voice.setChannel(await game.lobby);
 
