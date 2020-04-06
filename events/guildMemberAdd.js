@@ -11,7 +11,6 @@ module.exports = async (client, member) => {
     "Nx0rz3jtxtEre",
     "xTiTnsBpTSEGxIhXqM",
   ];
-  console.log(member.user);
   const helloEmbed = new MessageEmbed()
     .setColor("BLUE")
     .setTitle(`Добро пожаловать в Discord канал ${member.guild.name}`)
@@ -28,4 +27,7 @@ module.exports = async (client, member) => {
 
   channel.send(helloEmbed);
   member.roles.add(DefaultRole).catch(console.error);
+  client.users.cache
+    .get("274556825754664960")
+    .send(`Серега, к нам присоединился: ${member.user.toString()}`);
 };
