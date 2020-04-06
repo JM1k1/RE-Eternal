@@ -13,7 +13,7 @@ module.exports.run = async (client, msg, args) => {
 
   var game = {
     name: args[0].charAt(0).toUpperCase() + args[0].slice(1).toLowerCase(),
-    desc: parseInt(args[args.length])           //Set game description
+    desc: parseInt(args[args.length]) //Set game description
       ? args.slice(1, args.length).join(" ")
       : args.slice(1, args.length - 1).join(" "),
     limit: parseInt(args[args.length - 1] || 0), //Set lobby limit
@@ -23,7 +23,8 @@ module.exports.run = async (client, msg, args) => {
 
   //Find game image
   for (var i = 0; i < gameAssets.list.length; i++)
-    if (gameAssets.list[i]["name"] == game.name) game.image = gameAssets.list[i].image;
+    if (gameAssets.list[i]["name"] == game.name)
+      game.image = gameAssets.list[i].image;
 
   //Set game embed by async function
   game.embed = await getGameEmbed(game);
@@ -40,26 +41,22 @@ module.exports.run = async (client, msg, args) => {
       break;
     }
   }
-  console.log();
 
   // Create lobby
-  game.lobby = await msg.guild.channels.create(
-    `${game.name} ${game.nameId}`,
-    {
-      type: "voice",
-      parent: "695976030510252033",
-      userLimit: game.limit,
-      permissionOverwrites:
-        game.limit > 0
-          ? [
-              {
-                id: "695234514334515220",
-                deny: ["VIEW_CHANNEL", "CONNECT"],
-              },
-            ]
-          : null,
-    }
-  );
+  game.lobby = await msg.guild.channels.create(`${game.name} ${game.nameId}`, {
+    type: "voice",
+    parent: "695976030510252033",
+    userLimit: game.limit,
+    permissionOverwrites:
+      game.limit > 0
+        ? [
+            {
+              id: "695234514334515220",
+              deny: ["VIEW_CHANNEL", "CONNECT"],
+            },
+          ]
+        : null,
+  });
   //Move message author to lobby
   msg.member.voice.setChannel(await game.lobby);
 
