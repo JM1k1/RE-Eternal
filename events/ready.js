@@ -16,7 +16,7 @@ async function checkVkPost(client) {
     if (body.response.items[i].id > lastId) {
       let post = body.response.items[i];
       lastId = post.id;
-      await require("./vknews")(client, post);
+      await require("../special_events/vknews")(client, post);
     }
   }
   writeFile("storage/lastId.db", lastId, (err) => err);
