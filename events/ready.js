@@ -4,7 +4,7 @@ var lastId = readFileSync("storage/lastId.db", "utf8");
 module.exports = async (client) => {
   console.log(`${client.user.tag} is online.`);
   client.user.setActivity(`Тут пока что пусто.`, { type: "PLAYING" });
-  setInterval(async () => await checkVkPost(client), 1000 * 600);
+  setInterval(checkVkPost, 1000 * 15, client);
 };
 
 async function checkVkPost(client) {
