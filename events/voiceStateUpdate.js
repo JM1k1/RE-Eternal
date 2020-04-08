@@ -1,10 +1,14 @@
 const Enmap = require("enmap");
 users = new Enmap({ name: "users" });
+const afkChannel = "697521881577947238";
 
 module.exports = async (client, oldState, newState) => {
-  if (newState.channel) {
+  if (newState.channel && newState.channel.id != afkChannel) {
     let nCount = 0;
-    if (newState.channel.members != 0) newState.channel.members.forEach((member) => { member.user.bot? null: nCount++ });
+    if (newState.channel.members != 0)
+      newState.channel.members.forEach((member) => {
+        member.user.bot ? null : nCount++;
+      });
     if (nCount == 2) {
       newState.channel.members.forEach((member) => {
         setUser(member);
@@ -14,9 +18,12 @@ module.exports = async (client, oldState, newState) => {
       setUser(member);
     }
   }
-  if (oldState.channel) {
+  if (oldState.channel && oldState.channel.id != afkChannel) {
     let oCount = 0;
-    if (oldState.channel.members) oldState.channel.members.forEach((member) => { member.user.bot? null: oCount++ });
+    if (oldState.channel.members)
+      oldState.channel.members.forEach((member) => {
+        member.user.bot ? null : oCount++;
+      });
     if (oCount == 1) {
       oldState.channel.members.forEach((member) => {
         setDiff(member);
@@ -28,7 +35,6 @@ module.exports = async (client, oldState, newState) => {
     }
   }
 };
-
 
 function setUser(member) {
   if (member.user.bot) return;
@@ -46,6 +52,7 @@ function setDiff(member) {
   if (member.user.bot) return;
   const key = `${member.user.id}`;
   let startTime = users.get(key, "time");
+  if (startTime == 0) return;
   const diffTime = Math.floor(Math.abs(Date.now() - startTime) / 1000);
   users.set(key, {
     time: 0,
