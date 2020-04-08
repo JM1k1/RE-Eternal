@@ -1,10 +1,15 @@
 const { MessageEmbed, MessageAttachment } = require("discord.js");
-const snek = require("node-superfetch");
 const channelId = "695234711701815336";
+
 module.exports = async (client, post) => {
   let photoArr = [];
-  const embed = await getEmbed();
-    embed.setFooter(`${client.util.convertUnixTime(post.date)}`)
+  const { body } = await client.snek.get(
+    `https://api.vk.com/method/groups.getById?group_id=108550761&fields=members_count,photo_max&v=5.52&access_token=${process.env.VK_TOKEN}`
+  );
+  const embed = new MessageEmbed()
+    .setColor("ORANGE")
+    .setAuthor(body.response[0].name, body.response[0].photo_max)
+    .setFooter(`${client.util.convertUnixTime(post.date)}`)
     .setDescription(post.text)
     .setTitle("Новый пост")
     .setURL(`https://vk.com/replay_spb?w=wall${post.from_id}_${post.id}`);
@@ -45,13 +50,3 @@ module.exports = async (client, post) => {
     client.channels.cache.get(channelId).send(new MessageAttachment(element));
   });
 };
-
-async function getEmbed() {
-  const { body } = await snek.get(
-    `https://api.vk.com/method/groups.getById?group_id=108550761&fields=members_count,photo_max&v=5.52&access_token=${process.env.VK_TOKEN}`
-  );
-  const embed = new MessageEmbed()
-    .setColor("ORANGE")
-    .setAuthor(body.response[0].name, body.response[0].photo_max);
-  return embed;
-}
