@@ -4,7 +4,8 @@
   "description": "A node.js discord bot for RE:Play Server",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "url": "https://github.com/JM1k1/RE-Eternal/"
