@@ -18,5 +18,5 @@ logs/
 # Database files
 *.db
 
-# Storage files
-storage/
+# Enmap files
+data/
