@@ -1,6 +1,6 @@
 {
   "name": "reternal",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A node.js discord bot for RE:Play Server",
   "main": "server.js",
   "scripts": {
