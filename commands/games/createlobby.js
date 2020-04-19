@@ -56,7 +56,6 @@ module.exports.run = async (client, msg, args) => {
       break;
     }
   }
-  console.log();
 
   //Create lobby
   game.lobby = await msg.guild.channels.create(`${game.name} ${game.nameId}`, {
