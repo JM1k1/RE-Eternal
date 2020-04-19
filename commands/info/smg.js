@@ -1,7 +1,6 @@
 const { MessageEmbed } = require("discord.js");
-
 module.exports.run = async (client, msg, args) => {
-  if (args.length < 1) return args.missing(msg, "Пустое описание", this.help);
+  if (args.length < 1) return args.missing(msg, "Пустое заголовок", this.help);
   msg.delete();
   var sb = args.join(" ");
   if (sb.indexOf("{") != -1 && sb.indexOf("}") != -1) {
@@ -41,10 +40,10 @@ module.exports.conf = {
 
 module.exports.help = {
   name: "specialmsg",
-  description: "Returns embed message",
-  usage: "smg Title {Description} [image Url] /p",
+  description: "Возвращает встроенное сообщение",
+  usage: "smg Заголовок {Описание} [Url изображения] /p",
   example: [
-    "smg News {We got new game console - PS5} [https://i.imgur.com/PS5.png] /p",
-    "specialmsg Report {JMiki - Cool guy}",
+    "smg Новости {У нас появилвсь новая игра на PS5} [https://i.imgur.com/PS5.png]",
+    "specialmsg Заголовок {Подзаголовок} /p",
   ],
 };

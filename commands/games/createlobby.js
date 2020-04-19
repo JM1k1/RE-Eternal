@@ -73,7 +73,7 @@ module.exports.run = async (client, msg, args) => {
           ]
         : null,
   });
-  
+
   //Move message author to lobby
   msg.member.voice.setChannel(await game.lobby);
 
@@ -93,13 +93,13 @@ async function getGameEmbed(game) {
 }
 
 module.exports.conf = {
-  aliases: ["m", "cl"],
+  aliases: ["cl"],
   authorPerm: "",
 };
 
 module.exports.help = {
   name: "createlobby",
-  description: "Create voice lobby",
-  usage: "cl [game_name] <game_desc> <limit>",
+  description: "Создает голосовое лобби",
+  usage: "cl <game_name> [game_desc] [limit]",
   example: ["cl Overwatch Ranked 6"],
 };
