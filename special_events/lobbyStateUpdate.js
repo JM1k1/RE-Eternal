@@ -1,5 +1,5 @@
 const msgTimeout = { timeout: 120 * 1000, reason: "It had to be done." };
-const reactionAwaitTime = 1000 * 6000;
+const reactionAwaitTime = 1000 * 10800;
 const emoji = "🎮";
 
 module.exports = async (client, game) => {
