@@ -1,5 +1,5 @@
 const { readFileSync, writeFile } = require("fs");
-var lastId = readFileSync("storage/lastId.db", "utf8");
+var lastId = readFileSync("data/lastPostId", "utf8");
 
 module.exports = async (client) => {
   console.log(`${client.user.tag} is online.`);
@@ -19,5 +19,5 @@ async function checkVkPost(client) {
       await require("../special_events/vknews")(client, post);
     }
   }
-  writeFile("storage/lastId.db", lastId, (err) => err);
+  writeFile("data/lastPostId", lastId, (err) => err);
 }
