@@ -66,7 +66,6 @@ module.exports.run = async (client, msg, args) => {
 
 module.exports.conf = {
   aliases: ["h"],
-  clientPerm: "",
   authorPerm: "",
 };
 
