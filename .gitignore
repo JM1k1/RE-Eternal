@@ -20,3 +20,6 @@ logs/
 
 #Enmap files
 data/
+
+# Deprecated stuff
+deprecated/
