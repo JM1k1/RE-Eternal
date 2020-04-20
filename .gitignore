@@ -18,8 +18,8 @@ logs/
 # Database files
 *.db
 
-# Enmap files
+#Enmap files
 data/
 
-# Deprecated files
+# Deprecated stuff
 deprecated/
