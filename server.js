@@ -1,11 +1,15 @@
-const ReternalClient = require("./handle/ReternalClient.js");
+const express = require("express");
+const app = express();
+const http = require("http");
 
-const client = new ReternalClient({
-  fetchAllMember: true,
-  disableEveryone: true
+app.get("/", (request, response) => {
+    console.log("Ping Received: " + new Date().toUTCString());
+    response.sendStatus(200);
 });
 
-require("./handle/events")(client);
+app.listen(process.env.PORT);
+setInterval(() => {
+    http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 280001);
 
-require("dotenv").config();
-client.login(process.env.TOKEN);
+require("./bot.js");

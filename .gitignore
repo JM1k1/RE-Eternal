@@ -12,8 +12,8 @@ logs/
 .env
 .env.test
 
-# vscode launch file
+# vscode config directory
 .vscode/
 
-# Database files
-*.db
+# Enmap cache directory
+data/
