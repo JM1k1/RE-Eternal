@@ -13,7 +13,6 @@
   "author": "JMiki",
   "license": "MIT",
   "dependencies": {
-    "@discordjs/opus": "^0.1.0",
     "better-sqlite3": "^6.0.1",
     "discord-anti-spam": "^2.4.1",
     "discord.js": "^12.2.0",
