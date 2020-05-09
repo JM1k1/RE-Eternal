@@ -11,7 +11,7 @@ const modules = readdirSync("./commands/").filter(x =>
 );
 
 for (const module of modules) {
-  console.log(`Loading ${module} module.....`);
+  console.log(`⚙️  Loading ${module} module.....`);
   const moduleConf = require(`../commands/${module}/module.json`);
   moduleConf.path = `./commands/${module}`;
   moduleConf.cmds = [];
@@ -23,7 +23,7 @@ for (const module of modules) {
 
   for (let file of commandFiles) {
     file = file.substr(0, file.length - 3);
-    console.log(`Loading ${file} command.....`);
+    console.log(`⚙️  Loading ${file} command.....`);
 
     file = require(`../commands/${module}/${file}`);
     file.conf.module = moduleConf;

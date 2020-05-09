@@ -1,12 +1,27 @@
-const { owners } = require("../../config.json");
+const { devRoles } = require("../../config.json");
 
 module.exports.run = async (client, msg, args) => {
-  if (!owners.includes(msg.author.id)) return;
-  if (args.length < 2)
-    return args.missing(msg, "Ты забыл указать юзера", this.help);
+  if (
+    !msg.member.roles.cache.some((role) => devRoles.some((i) => i == role.id))
+  )
+    return (
+      msg.channel
+        .send(`${msg.author.toString()}, Доступ к команде запрещён.`)
+        .then((msgN) => msgN.delete(client.util.msgTimeout(240))) &&
+      msg.delete()
+    );
+
+  if (args.length < 1)
+    return args.missing(msg, "Пустое сообщение", this.help);
+
   let user = await msg.mentions.users.first();
-  msg.channel.send("Сообщение отправлено!");
-  return user.send(args.slice(1).join(" "));
+  if (user) {
+    msg.channel
+      .send("Сообщение отправлено!")
+      .then((msg) => msg.delete({ timeout: 5000, reason: "" }));
+    msg.delete();
+    return user.send(args.slice(1).join(" "));
+  } else return msg.channel.send(args.join(" ")) && msg.delete();
 };
 
 module.exports.conf = {
@@ -16,7 +31,7 @@ module.exports.conf = {
 
 module.exports.help = {
   name: "devsay",
-  description: "Say as dev",
-  usage: "devsay <id> <message>",
-  example: ["devsay yo"],
+  description: "Отправляет сообщение от имени бота",
+  usage: "devsay [@пользователь]",
+  example: ["devsay @JMiki Привет!", "ds Всем привет!"],
 };

@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageAttachment } = require("discord.js");
-const channelId = "695234711701815336";
+const channelId = "708703182007697430";
 
 module.exports = async (client, post) => {
   let photoArr = [];

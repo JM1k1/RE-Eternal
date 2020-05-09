@@ -1,9 +1,10 @@
 const { readFileSync, writeFile } = require("fs");
 var lastId = readFileSync("data/lastPostId", "utf8");
+const { prefix } = require("../config.json")
 
 module.exports = async (client) => {
-  console.log(`${client.user.tag} is online.`);
-  client.user.setActivity(`Серега, что тут написать ?`, { type: "PLAYING" });
+  console.log(`✅ ${client.user.tag} is online.`);
+  client.user.setActivity(`${prefix}help`, { type: "PLAYING" });
   setInterval(await checkVkPost, 1000 * 600, client);
 };
 

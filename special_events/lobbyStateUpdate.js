@@ -1,5 +1,4 @@
-const msgTimeout = { timeout: 120 * 1000, reason: "It had to be done." };
-const reactionAwaitTime = 1000 * 10800;
+const reactionAwaitTime = 1000 * 7200;
 const emoji = "🎮";
 
 module.exports = async (client, game) => {
@@ -8,7 +7,7 @@ module.exports = async (client, game) => {
       if (oldState.channel.id == game.lobby.id) {
         if (oldState.channel.members.size == 0) {
           oldState.channel.delete();
-          return await game.msg.delete();
+          return game.msg.delete();
         }
         await game.msg.edit(await updateEmbed(game));
       }
@@ -23,17 +22,17 @@ module.exports = async (client, game) => {
 };
 
 async function updateEmbed(game) {
-  let team = `${game.desc}\n\nИгроки:\n`;
+  let team = `${game.desc}\n\n**Игроки:**\n` + game.lobby.members.map(member => `${member.toString()}\n`).join("");
   let freeSlots = game.limit - (await game.lobby.members.size);
-  game.lobby.members.forEach((member) => (team += `${member.toString()}\n`));
-  game.embed.setDescription(team);
-  if (freeSlots > 0) {
-    game.embed.setTitle(`Ищут + ${freeSlots} в ${game.name}`);
+  if (!game.lobby.full) {
+    game.embed.setTitle(`Ищут +${freeSlots} в ${game.name}`);
     game.embed.setAuthor(`Подбор игроков 🎮`, game.authorAvatar);
-    awaitReaction(game);
+    game.embed.setDescription(team + `\nПрисоединиться:  [<:plus:708748280066211882>](${game.link})`);
+    //awaitReaction(game);
   } else {
-    game.embed.setAuthor(`Приятной игры 🎮`, game.authorAvatar);
     game.embed.setTitle(`Играют в ${game.name}`);
+    game.embed.setAuthor(`Приятной игры 🎮`, game.authorAvatar);
+    game.embed.setDescription(team);
   }
   return game.embed;
 }
@@ -69,12 +68,12 @@ async function awaitReaction(game) {
           .send(
             `${member.user.toString()}, Вы должны сначала присоединиться к голосовому каналу.`
           )
-          .then((msgN) => msgN.delete(msgTimeout));
+          .then((msgN) => msgN.delete(client.util.msgTimeout));
       }
     } else {
       game.msg.channel
         .send(`${member.user.toString()}, Вы уже находитесь в лобби.`)
-        .then((msgN) => msgN.delete(msgTimeout));
+        .then((msgN) => msgN.delete(client.util.msgTimeout));
     }
     return awaitReaction(game);
   } catch (err) {

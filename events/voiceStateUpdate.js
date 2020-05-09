@@ -1,6 +1,6 @@
 const Enmap = require("enmap");
 users = new Enmap({ name: "users" });
-const afkChannel = "697521881577947238";
+const afkChannel = "569935487704367120";
 
 module.exports = async (client, oldState, newState) => {
   if (newState.channel && newState.channel.id != afkChannel) {
@@ -40,12 +40,11 @@ function setUser(member) {
   if (member.user.bot) return;
   const key = `${member.user.id}`;
   users.ensure(key, {
-    user: member.user.username,
+    userId: member.user.id,
     time: 0,
     stime: 0,
   });
   users.set(key, Date.now(), "time");
-  //console.log(users);
 }
 
 function setDiff(member) {
@@ -54,9 +53,6 @@ function setDiff(member) {
   let startTime = users.get(key, "time");
   if (startTime == 0) return;
   const diffTime = Math.floor(Math.abs(Date.now() - startTime) / 1000);
-  users.set(key, {
-    time: 0,
-    stime: users.get(key, "stime") + diffTime,
-  });
-  //console.log(users);
+  users.set(key, 0, "time");
+  users.set(key, (users.get(key, "stime") + diffTime), "stime");
 }
